@@ -311,17 +311,17 @@
                             <button onclick="app.showAdminSection('dashboard')" class="admin-nav-btn active flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-dashboard">
                                 <i class="fa-solid fa-chart-pie w-5 text-center text-gray-400"></i> Resumen
                             </button>
+                            <button onclick="app.showAdminSection('orders')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition text-kgb-secondary" data-target="admin-orders">
+                                <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-gray-400"></i> Historial de Ventas
+                            </button>
                             <button onclick="app.showAdminSection('products')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-products">
                                 <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-400"></i> Productos
-                            </button>
-                            <button onclick="app.showAdminSection('orders')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-orders">
-                                <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-gray-400"></i> Pedidos
                             </button>
                             <button onclick="app.showAdminSection('vendors')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-vendors">
                                 <i class="fa-solid fa-users w-5 text-center text-gray-400"></i> Vendedores
                             </button>
                             <button onclick="app.showAdminSection('reports')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-reports">
-                                <i class="fa-solid fa-chart-line w-5 text-center text-gray-400"></i> Reportes
+                                <i class="fa-solid fa-chart-line w-5 text-center text-gray-400"></i> Comisiones
                             </button>
                             <button onclick="app.showAdminSection('settings')" class="admin-nav-btn flex items-center gap-3 px-4 py-3 rounded hover:bg-gray-800 text-left transition" data-target="admin-settings">
                                 <i class="fa-solid fa-gear w-5 text-center text-gray-400"></i> Configuración
@@ -339,28 +339,28 @@
                     
                     <!-- ADMIN: Dashboard -->
                     <div id="admin-dashboard" class="admin-content-section">
-                        <h2 class="text-2xl font-bold mb-6">Panel de Control</h2>
+                        <h2 class="text-2xl font-bold mb-6">Panel de Control (Ganancias Reales)</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                             <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 border-l-4 border-l-blue-500">
                                 <p class="text-sm text-gray-400">Total Productos</p>
                                 <h3 class="text-2xl font-bold" id="dash-total-products">0</h3>
                             </div>
                             <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 border-l-4 border-l-green-500">
-                                <p class="text-sm text-gray-400">Total Pedidos</p>
+                                <p class="text-sm text-gray-400">Pedidos Completados</p>
                                 <h3 class="text-2xl font-bold" id="dash-total-orders">0</h3>
                             </div>
                             <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 border-l-4 border-l-yellow-500">
-                                <p class="text-sm text-gray-400">Ventas (Neto)</p>
+                                <p class="text-sm text-gray-400">Ganancia Tienda (Neto)</p>
                                 <h3 class="text-2xl font-bold" id="dash-total-sales">S/ 0.00</h3>
                             </div>
                             <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 border-l-4 border-l-purple-500">
-                                <p class="text-sm text-gray-400">Comisiones Pendientes</p>
+                                <p class="text-sm text-gray-400">Comisiones Aprobadas</p>
                                 <h3 class="text-2xl font-bold" id="dash-total-commissions">S/ 0.00</h3>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div class="bg-gray-900 p-4 rounded-lg border border-gray-800">
-                                <h3 class="font-bold mb-4 border-b border-gray-800 pb-2">Últimos Pedidos</h3>
+                                <h3 class="font-bold mb-4 border-b border-gray-800 pb-2">Pedidos Recientes (Pendientes)</h3>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-sm text-left">
                                         <thead class="text-xs text-gray-400 uppercase bg-gray-800">
@@ -374,6 +374,30 @@
                                 <h3 class="font-bold mb-4 border-b border-gray-800 pb-2">Productos con Bajo Stock</h3>
                                 <ul id="dash-low-stock" class="space-y-2 text-sm"></ul>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN: Historial de Ventas (Orders) -->
+                    <div id="admin-orders" class="admin-content-section hide-view">
+                         <div class="flex justify-between items-center mb-6">
+                             <h2 class="text-2xl font-bold text-kgb-secondary"><i class="fa-solid fa-list-check mr-2"></i>Historial de Ventas</h2>
+                         </div>
+                         <p class="text-sm text-gray-400 mb-4">Los pedidos entran como "Pendiente". Márcarlos como "Completado" para que las ganancias y comisiones se sumen al dashboard general.</p>
+                         <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left border-collapse">
+                                <thead class="text-xs text-gray-400 uppercase bg-gray-900 border-b border-gray-800">
+                                    <tr>
+                                        <th class="px-4 py-3">Fecha</th>
+                                        <th class="px-4 py-3">Pedido</th>
+                                        <th class="px-4 py-3">Cliente</th>
+                                        <th class="px-4 py-3">Total Venta</th>
+                                        <th class="px-4 py-3">Vendedor</th>
+                                        <th class="px-4 py-3">Estado</th>
+                                        <th class="px-4 py-3 text-right">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-orders-table"></tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -391,6 +415,7 @@
                                         <th class="px-4 py-3">Nombre</th>
                                         <th class="px-4 py-3">Categoría</th>
                                         <th class="px-4 py-3">Stock</th>
+                                        <th class="px-4 py-3">Precio Compra</th>
                                         <th class="px-4 py-3">Precio Venta</th>
                                         <th class="px-4 py-3 text-right">Acciones</th>
                                     </tr>
@@ -408,18 +433,38 @@
                             <h2 class="text-2xl font-bold">Vendedores Autorizados</h2>
                             <button onclick="app.openVendorModal()" class="bg-kgb-primary hover:bg-blue-600 text-white px-4 py-2 rounded text-sm"><i class="fa-solid fa-plus mr-1"></i> Nuevo Vendedor</button>
                         </div>
+                        <p class="text-sm text-gray-400 mb-4">Nota: Todos los vendedores ganan exactamente el 40% de la ganancia (Precio Venta - Precio Compra) de los productos que venden.</p>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left">
                                 <thead class="text-xs text-gray-400 uppercase bg-gray-900 border-b border-gray-800">
                                     <tr>
                                         <th class="px-4 py-3">Nombre</th>
                                         <th class="px-4 py-3">Teléfono</th>
-                                        <th class="px-4 py-3">Comisión Base</th>
+                                        <th class="px-4 py-3">Comisión</th>
                                         <th class="px-4 py-3">Estado</th>
                                         <th class="px-4 py-3 text-right">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-vendors-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- ADMIN: Reports -->
+                    <div id="admin-reports" class="admin-content-section hide-view">
+                         <h2 class="text-2xl font-bold mb-6">Comisiones Acumuladas</h2>
+                         <p class="text-sm text-gray-400 mb-4">Aquí se muestran las comisiones generadas ÚNICAMENTE de las ventas que han sido marcadas como "Completado".</p>
+                         <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left border-collapse">
+                                <thead class="text-xs text-gray-400 uppercase bg-gray-900 border-b border-gray-800">
+                                    <tr>
+                                        <th class="px-4 py-3">Vendedor</th>
+                                        <th class="px-4 py-3 text-center">Ventas Completadas</th>
+                                        <th class="px-4 py-3">Total Vendido</th>
+                                        <th class="px-4 py-3">Ganancia 40% (Aprobada)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-reports-table"></tbody>
                             </table>
                         </div>
                     </div>
@@ -479,38 +524,17 @@
                                     </label>
                                     <button onclick="app.resetTestData()" class="bg-red-900/50 hover:bg-red-900 text-red-300 border border-red-800 px-4 py-2 rounded text-sm ml-auto"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Restaurar Datos Prueba</button>
                                 </div>
-                                <div class="mt-4 p-3 bg-blue-900/30 border border-blue-800 rounded-lg">
-                                    <h4 class="text-sm font-bold text-blue-400 mb-1"><i class="fa-brands fa-google mr-1"></i> Preparado para Google Sheets</h4>
-                                    <p class="text-xs text-gray-400">El código contiene la estructura (comentada) para conectar esta web con Google Apps Script y usar Sheets como base de datos en el futuro.</p>
+                                <div class="mt-4 p-4 bg-green-900/20 border border-green-800 rounded-lg">
+                                    <h4 class="text-sm font-bold text-green-400 mb-2"><i class="fa-brands fa-google mr-1"></i> Sincronización con Google Sheets</h4>
+                                    <p class="text-xs text-gray-400 mb-3">Respalda tu catálogo de productos y la lista de vendedores en la nube.</p>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="app.syncProductsToSheets()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-2 rounded text-xs flex-1 transition shadow"><i class="fa-solid fa-boxes-stacked mr-1"></i> Subir Productos</button>
+                                        <button type="button" onclick="app.syncVendorsToSheets()" class="bg-green-700 hover:bg-green-600 text-white px-3 py-2 rounded text-xs flex-1 transition shadow"><i class="fa-solid fa-users mr-1"></i> Subir Vendedores</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Add placeholders for Orders and Reports to prevent errors, keep them simple for MVP -->
-                    <div id="admin-orders" class="admin-content-section hide-view">
-                         <h2 class="text-2xl font-bold mb-6">Historial de Pedidos</h2>
-                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-gray-900 border-b border-gray-800">
-                                    <tr><th>Fecha</th><th>Pedido</th><th>Cliente</th><th>Total</th><th>Vendedor</th><th>Acción</th></tr>
-                                </thead>
-                                <tbody id="admin-orders-table"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id="admin-reports" class="admin-content-section hide-view">
-                         <h2 class="text-2xl font-bold mb-6">Reporte de Comisiones</h2>
-                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="text-xs text-gray-400 uppercase bg-gray-900 border-b border-gray-800">
-                                    <tr><th>Vendedor</th><th>Ventas Realizadas</th><th>Total Vendido</th><th>Comisión Generada</th></tr>
-                                </thead>
-                                <tbody id="admin-reports-table"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
@@ -628,11 +652,11 @@
                     </div>
                     <div>
                         <label class="block text-xs text-gray-400 mb-1">Precio Compra (S/)</label>
-                        <input type="number" step="0.01" id="fp-price-buy" class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white">
+                        <input type="number" step="0.01" id="fp-price-buy" class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white border-l-2 border-l-red-500">
                     </div>
                     <div>
                         <label class="block text-xs text-gray-400 mb-1">Precio Venta (S/) *</label>
-                        <input type="number" step="0.01" id="fp-price-sell" required class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white border-l-2 border-l-kgb-primary">
+                        <input type="number" step="0.01" id="fp-price-sell" required class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white border-l-2 border-l-green-500">
                     </div>
                     <div>
                         <label class="block text-xs text-gray-400 mb-1">Stock</label>
@@ -645,18 +669,6 @@
                         <label class="flex items-center gap-2 text-sm cursor-pointer">
                             <input type="checkbox" id="fp-featured" class="rounded bg-gray-900 border-gray-700 text-kgb-primary"> Destacado
                         </label>
-                    </div>
-                    
-                    <div class="md:col-span-2 border-t border-gray-800 pt-3 mt-2">
-                        <h4 class="text-sm font-bold text-gray-300 mb-2">Comisión Específica (Opcional)</h4>
-                        <div class="flex gap-4">
-                            <select id="fp-comm-type" class="w-1/3 bg-gray-900 border border-gray-700 rounded px-2 py-2 text-sm text-white">
-                                <option value="">Por defecto del vendedor</option>
-                                <option value="fixed">Monto Fijo (S/)</option>
-                                <option value="percent">Porcentaje (%)</option>
-                            </select>
-                            <input type="number" step="0.01" id="fp-comm-val" placeholder="Valor" class="w-2/3 bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white">
-                        </div>
                     </div>
 
                     <div class="md:col-span-2">
@@ -702,16 +714,9 @@
                     <label class="block text-xs text-gray-400 mb-1">WhatsApp / Teléfono *</label>
                     <input type="text" id="fv-phone" required class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-white">
                 </div>
-                <div class="bg-gray-900 p-3 rounded border border-gray-800">
-                    <label class="block text-xs text-kgb-secondary font-bold mb-2">Comisión Base (General)</label>
-                    <div class="flex gap-2">
-                        <select id="fv-comm-type" class="w-1/2 bg-gray-800 border border-gray-700 rounded px-2 py-2 text-sm text-white">
-                            <option value="percent">Porcentaje (%)</option>
-                            <option value="fixed">Monto Fijo (S/)</option>
-                        </select>
-                        <input type="number" step="0.01" id="fv-comm-val" value="5" required class="w-1/2 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white">
-                    </div>
-                    <p class="text-[10px] text-gray-500 mt-1">Se aplica si el producto no tiene comisión específica.</p>
+                <div class="bg-blue-900/30 p-3 rounded border border-blue-800 mt-4">
+                    <p class="text-xs text-blue-300 font-bold"><i class="fa-solid fa-circle-info mr-1"></i>Regla de Comisión</p>
+                    <p class="text-[11px] text-gray-400 mt-1">Este vendedor ganará automáticamente el 40% de la ganancia real (Precio Venta - Precio Compra) de cada producto que venda.</p>
                 </div>
                 <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-gray-800">
                     <button type="button" onclick="app.closeModal('modal-admin-vendor')" class="px-4 py-2 text-sm text-gray-400 hover:text-white">Cancelar</button>
@@ -791,7 +796,7 @@
             whatsapp: '51999999999',
             adminPass: 'admin123',
             currency: 'S/',
-            sheetsUrl: '',
+            sheetsUrl: 'https://script.google.com/macros/s/AKfycbyo5fdejDS18-QVJQfpmp-Symp6kRiTg0Lh0UHGKG-WhJD6reTEHWz7_BEgbBn6aKyG/exec',
             deliveryZones: [
                 { id: 'z1', name: 'Huánuco Centro', price: 5 },
                 { id: 'z2', name: 'Amarilis', price: 7 },
@@ -801,23 +806,23 @@
 
         // --- MOCK DATA (12 Products) ---
         const MOCK_PRODUCTS = [
-            { id: 'p1', name: 'Impresora Epson EcoTank L3250', cat: 'Impresoras', brand: 'Epson', pBuy: 650, pSell: 799, stock: 5, desc: 'Multifuncional inalámbrica con sistema original de tanque de tinta. Ideal para hogar y negocio.', img: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500&q=80', isService: false, feat: true, commType: 'fixed', commVal: 30 },
-            { id: 'p2', name: 'Laptop Lenovo IdeaPad 3 Core i5', cat: 'Laptops', brand: 'Lenovo', pBuy: 1800, pSell: 2150, stock: 3, desc: 'Procesador Intel Core i5 11va Gen, 8GB RAM, 512GB SSD, Pantalla 15.6" FHD.', img: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80', isService: false, feat: true, commType: 'percent', commVal: 5 },
-            { id: 'p3', name: 'Mouse Gamer Logitech G203 RGB', cat: 'Accesorios', brand: 'Logitech', pBuy: 70, pSell: 110, stock: 15, desc: 'Sensor óptico de 8000 DPI, iluminación LIGHTSYNC RGB, 6 botones programables.', img: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80', isService: false, feat: false, commType: '', commVal: 0 },
-            { id: 'p4', name: 'Teclado Mecánico Redragon Kumara', cat: 'Accesorios', brand: 'Redragon', pBuy: 120, pSell: 169, stock: 8, desc: 'Switches Outemu Blue, retroiluminación roja, diseño TKL (sin pad numérico).', img: 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&q=80', isService: false, feat: false, commType: '', commVal: 0 },
-            { id: 'p5', name: 'Fuente de Poder Corsair CV650 650W', cat: 'Componentes PC', brand: 'Corsair', pBuy: 190, pSell: 245, stock: 4, desc: 'Certificación 80 PLUS Bronze, ventilador silencioso de 120mm.', img: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500&q=80', isService: false, feat: false, commType: '', commVal: 0 },
-            { id: 'p6', name: 'Unidad SSD Kingston NV2 1TB M.2', cat: 'Componentes PC', brand: 'Kingston', pBuy: 180, pSell: 235, stock: 12, desc: 'Velocidades de lectura/escritura de hasta 3500/2100 MB/s. PCIe 4.0 NVMe.', img: 'https://plus.unsplash.com/premium_photo-1683401569420-252f550974fb?w=500&q=80', isService: false, feat: false, commType: 'fixed', commVal: 10 },
-            { id: 'p7', name: 'Memoria RAM Corsair Vengeance 8GB DDR4', cat: 'Componentes PC', brand: 'Corsair', pBuy: 90, pSell: 130, stock: 20, desc: 'DDR4 3200MHz, disipador de calor de aluminio negro.', img: 'https://images.unsplash.com/photo-1562976540-1502f7592208?w=500&q=80', isService: false, feat: false, commType: '', commVal: 0 },
-            { id: 'p8', name: 'Cámara IP Hikvision 2MP Domo WiFi', cat: 'Cámaras de Seguridad', brand: 'Hikvision', pBuy: 140, pSell: 195, stock: 6, desc: 'Resolución 1080p, audio bidireccional, visión nocturna IR, ranura microSD.', img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=500&q=80', isService: false, feat: true, commType: 'percent', commVal: 8 },
-            { id: 'p9', name: 'Kit CCTV 4 Cámaras Dahua 1080p', cat: 'Cámaras de Seguridad', brand: 'Dahua', pBuy: 450, pSell: 650, stock: 2, desc: 'Incluye 1 DVR 4CH, 4 cámaras bullet 2MP, cableado y fuentes. (Sin disco duro).', img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=500&q=80', isService: false, feat: true, commType: 'fixed', commVal: 50 },
-            { id: 'p10', name: 'Router TP-Link Archer AX10 Wi-Fi 6', cat: 'Redes y Conectividad', brand: 'TP-Link', pBuy: 180, pSell: 260, stock: 7, desc: 'Velocidades Wi-Fi 6 de hasta 1.5 Gbps, CPU triple núcleo, 4 antenas.', img: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=500&q=80', isService: false, feat: false, commType: '', commVal: 0 },
-            { id: 'p11', name: 'Mantenimiento Preventivo de Laptop', cat: 'Servicios Técnicos', brand: 'KGB', pBuy: 0, pSell: 60, stock: 999, desc: 'Limpieza interna completa, cambio de pasta térmica, optimización de sistema operativo.', img: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80', isService: true, feat: true, commType: 'fixed', commVal: 15 },
-            { id: 'p12', name: 'Instalación de Punto de Red (Punto Adicional)', cat: 'Servicios Técnicos', brand: 'KGB', pBuy: 10, pSell: 45, stock: 999, desc: 'Instalación de cable UTP Cat6, incluye conector RJ45 o Jack, canaleta básica (hasta 15m).', img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=500&q=80', isService: true, feat: false, commType: 'percent', commVal: 20 }
+            { id: 'p1', name: 'Impresora Epson EcoTank L3250', cat: 'Impresoras', brand: 'Epson', pBuy: 650, pSell: 799, stock: 5, desc: 'Multifuncional inalámbrica con sistema original de tanque de tinta. Ideal para hogar y negocio.', img: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500&q=80', isService: false, feat: true },
+            { id: 'p2', name: 'Laptop Lenovo IdeaPad 3 Core i5', cat: 'Laptops', brand: 'Lenovo', pBuy: 1800, pSell: 2150, stock: 3, desc: 'Procesador Intel Core i5 11va Gen, 8GB RAM, 512GB SSD, Pantalla 15.6" FHD.', img: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80', isService: false, feat: true },
+            { id: 'p3', name: 'Mouse Gamer Logitech G203 RGB', cat: 'Accesorios', brand: 'Logitech', pBuy: 70, pSell: 110, stock: 15, desc: 'Sensor óptico de 8000 DPI, iluminación LIGHTSYNC RGB, 6 botones programables.', img: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80', isService: false, feat: false },
+            { id: 'p4', name: 'Teclado Mecánico Redragon Kumara', cat: 'Accesorios', brand: 'Redragon', pBuy: 120, pSell: 169, stock: 8, desc: 'Switches Outemu Blue, retroiluminación roja, diseño TKL (sin pad numérico).', img: 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&q=80', isService: false, feat: false },
+            { id: 'p5', name: 'Fuente de Poder Corsair CV650 650W', cat: 'Componentes PC', brand: 'Corsair', pBuy: 190, pSell: 245, stock: 4, desc: 'Certificación 80 PLUS Bronze, ventilador silencioso de 120mm.', img: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500&q=80', isService: false, feat: false },
+            { id: 'p6', name: 'Unidad SSD Kingston NV2 1TB M.2', cat: 'Componentes PC', brand: 'Kingston', pBuy: 180, pSell: 235, stock: 12, desc: 'Velocidades de lectura/escritura de hasta 3500/2100 MB/s. PCIe 4.0 NVMe.', img: 'https://plus.unsplash.com/premium_photo-1683401569420-252f550974fb?w=500&q=80', isService: false, feat: false },
+            { id: 'p7', name: 'Memoria RAM Corsair Vengeance 8GB DDR4', cat: 'Componentes PC', brand: 'Corsair', pBuy: 90, pSell: 130, stock: 20, desc: 'DDR4 3200MHz, disipador de calor de aluminio negro.', img: 'https://images.unsplash.com/photo-1562976540-1502f7592208?w=500&q=80', isService: false, feat: false },
+            { id: 'p8', name: 'Cámara IP Hikvision 2MP Domo WiFi', cat: 'Cámaras de Seguridad', brand: 'Hikvision', pBuy: 140, pSell: 195, stock: 6, desc: 'Resolución 1080p, audio bidireccional, visión nocturna IR, ranura microSD.', img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=500&q=80', isService: false, feat: true },
+            { id: 'p9', name: 'Kit CCTV 4 Cámaras Dahua 1080p', cat: 'Cámaras de Seguridad', brand: 'Dahua', pBuy: 450, pSell: 650, stock: 2, desc: 'Incluye 1 DVR 4CH, 4 cámaras bullet 2MP, cableado y fuentes. (Sin disco duro).', img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=500&q=80', isService: false, feat: true },
+            { id: 'p10', name: 'Router TP-Link Archer AX10 Wi-Fi 6', cat: 'Redes y Conectividad', brand: 'TP-Link', pBuy: 180, pSell: 260, stock: 7, desc: 'Velocidades Wi-Fi 6 de hasta 1.5 Gbps, CPU triple núcleo, 4 antenas.', img: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=500&q=80', isService: false, feat: false },
+            { id: 'p11', name: 'Mantenimiento Preventivo de Laptop', cat: 'Servicios Técnicos', brand: 'KGB', pBuy: 0, pSell: 60, stock: 999, desc: 'Limpieza interna completa, cambio de pasta térmica, optimización de sistema operativo.', img: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80', isService: true, feat: true },
+            { id: 'p12', name: 'Instalación de Punto de Red (Punto Adicional)', cat: 'Servicios Técnicos', brand: 'KGB', pBuy: 10, pSell: 45, stock: 999, desc: 'Instalación de cable UTP Cat6, incluye conector RJ45 o Jack, canaleta básica (hasta 15m).', img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=500&q=80', isService: true, feat: false }
         ];
 
         const MOCK_VENDORS = [
-            { id: 'v1', name: 'Juan Ventas', phone: '51987654321', commType: 'percent', commVal: 5, active: true },
-            { id: 'v2', name: 'María Asesora', phone: '51912345678', commType: 'fixed', commVal: 10, active: true }
+            { id: 'v1', name: 'Juan Ventas', phone: '51987654321', active: true },
+            { id: 'v2', name: 'María Asesora', phone: '51912345678', active: true }
         ];
 
         const AppState = {
@@ -1265,18 +1270,14 @@
             calculateCommission: function(item, vendor) {
                 if(!vendor) return 0;
                 
-                // 1. Check item specific commission
-                if(item.commType === 'fixed') {
-                    return parseFloat(item.commVal) * item.qty;
-                } else if (item.commType === 'percent') {
-                    return (parseFloat(item.pSell) * (parseFloat(item.commVal)/100)) * item.qty;
-                }
+                // Calculamos la ganancia neta (Precio Venta - Precio Compra)
+                const pBuy = parseFloat(item.pBuy) || 0;
+                const pSell = parseFloat(item.pSell) || 0;
+                const profit = pSell - pBuy;
                 
-                // 2. Check vendor general commission
-                if(vendor.commType === 'fixed') {
-                    return parseFloat(vendor.commVal) * item.qty; // Fixed per item sold
-                } else if (vendor.commType === 'percent') {
-                    return (parseFloat(item.pSell) * (parseFloat(vendor.commVal)/100)) * item.qty;
+                // Aplicar exactamente el 40% de la ganancia para todos los vendedores
+                if (profit > 0) {
+                    return profit * 0.40 * item.qty;
                 }
 
                 return 0;
@@ -1305,10 +1306,12 @@
                 
                 let subtotal = 0;
                 let totalCommission = 0;
+                let totalCost = 0;
                 const finalItems = [];
 
                 AppState.cart.forEach(item => {
                     subtotal += (item.pSell * item.qty);
+                    totalCost += ((parseFloat(item.pBuy) || 0) * item.qty);
                     const comm = this.calculateCommission(item, vendor);
                     totalCommission += comm;
                     
@@ -1333,11 +1336,12 @@
                     vendorName: vendor ? vendor.name : 'Tienda Directa',
                     items: finalItems,
                     subtotal: subtotal,
+                    totalCost: totalCost, // Guardamos el costo de compra interno
                     delivery: deliveryCost,
                     deliveryDesc: deliveryName,
                     total: total,
                     commissionCalculated: totalCommission,
-                    status: 'Pendiente'
+                    status: 'Pendiente' // Los pedidos inician como "Pendiente"
                 };
 
                 // Save Order
@@ -1353,7 +1357,7 @@
                 });
                 this.saveToLocal('kgb_products', AppState.products);
                 
-                // Optional: Sync to Google Sheets placeholder
+                // Enviar a Google Sheets automáticamente al crear
                 this.syncOrderToSheets(order);
 
                 // Show Voucher
@@ -1472,29 +1476,39 @@
             // --- ADMIN: DASHBOARD ---
             renderAdminDashboard: function() {
                 document.getElementById('dash-total-products').textContent = AppState.products.length;
-                document.getElementById('dash-total-orders').textContent = AppState.orders.length;
                 
-                let totalVentas = 0;
-                let totalComm = 0;
+                let countCompletados = 0;
+                let totalVentasTienda = 0;
+                let totalComisionesAprobadas = 0;
+                
                 AppState.orders.forEach(o => {
-                    // Solo sumar si no está cancelado (simplificado)
-                    totalVentas += (o.subtotal - o.commissionCalculated); // Neto para tienda (sin delivery)
-                    totalComm += o.commissionCalculated;
+                    // Solo sumar dinero de los pedidos marcados como "Completado"
+                    if (o.status === 'Completado') {
+                        countCompletados++;
+                        // Ganancia tienda = Total vendido (subtotal) - Costo de los productos - Comisión del vendedor
+                        const gananciaNetaTienda = (o.subtotal - o.totalCost) - o.commissionCalculated;
+                        totalVentasTienda += gananciaNetaTienda;
+                        totalComisionesAprobadas += o.commissionCalculated;
+                    }
                 });
                 
-                document.getElementById('dash-total-sales').textContent = this.formatMoney(totalVentas);
-                document.getElementById('dash-total-commissions').textContent = this.formatMoney(totalComm);
+                document.getElementById('dash-total-orders').textContent = countCompletados;
+                document.getElementById('dash-total-sales').textContent = this.formatMoney(totalVentasTienda);
+                document.getElementById('dash-total-commissions').textContent = this.formatMoney(totalComisionesAprobadas);
 
-                // Recent Orders
-                const recent = AppState.orders.slice(0, 5);
-                document.getElementById('dash-recent-orders').innerHTML = recent.map(o => `
+                // Recent Orders (Pendientes)
+                const pendientes = AppState.orders.filter(o => o.status === 'Pendiente').slice(0, 5);
+                document.getElementById('dash-recent-orders').innerHTML = pendientes.map(o => `
                     <tr class="border-b border-gray-800 hover:bg-gray-800/50">
                         <td class="py-2">${o.id}</td>
                         <td class="py-2 truncate max-w-[100px]" title="${o.client.name}">${o.client.name}</td>
                         <td class="py-2 text-kgb-primary">${this.formatMoney(o.total)}</td>
-                        <td class="py-2"><span class="bg-gray-700 text-xs px-2 py-1 rounded">${o.status}</span></td>
+                        <td class="py-2"><span class="bg-gray-700 text-xs px-2 py-1 rounded text-yellow-400">Pendiente</span></td>
                     </tr>
                 `).join('');
+                if(pendientes.length === 0) {
+                    document.getElementById('dash-recent-orders').innerHTML = '<tr><td colspan="4" class="py-4 text-center text-gray-500">No hay pedidos pendientes</td></tr>';
+                }
 
                 // Low Stock
                 const lowStock = AppState.products.filter(p => !p.isService && p.stock <= 3).sort((a,b) => a.stock - b.stock).slice(0,5);
@@ -1515,7 +1529,8 @@
                         <td class="px-4 py-2 font-medium line-clamp-2" title="${p.name}">${p.name}</td>
                         <td class="px-4 py-2 text-xs">${p.cat} ${p.isService ? '<span class="ml-1 text-blue-400">(Serv)</span>' : ''}</td>
                         <td class="px-4 py-2">${p.isService ? '-' : (p.stock <= 0 ? '<span class="text-red-400">0</span>' : p.stock)}</td>
-                        <td class="px-4 py-2 text-kgb-primary">${this.formatMoney(p.pSell)}</td>
+                        <td class="px-4 py-2 text-gray-400">${this.formatMoney(p.pBuy || 0)}</td>
+                        <td class="px-4 py-2 text-kgb-primary font-bold">${this.formatMoney(p.pSell)}</td>
                         <td class="px-4 py-2 text-right whitespace-nowrap">
                             <button onclick="app.editProduct('${p.id}')" class="text-gray-400 hover:text-white mr-2"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button onclick="app.deleteProduct('${p.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
@@ -1548,9 +1563,6 @@
                 document.getElementById('fp-is-service').checked = p.isService;
                 document.getElementById('fp-featured').checked = p.feat;
                 document.getElementById('fp-desc').value = p.desc || '';
-                
-                document.getElementById('fp-comm-type').value = p.commType || '';
-                document.getElementById('fp-comm-val').value = p.commVal || '';
 
                 if(p.img && p.img.startsWith('data:image')) {
                     document.getElementById('fp-img-base64').value = p.img;
@@ -1606,8 +1618,6 @@
                     isService: document.getElementById('fp-is-service').checked,
                     feat: document.getElementById('fp-featured').checked,
                     desc: document.getElementById('fp-desc').value.trim(),
-                    commType: document.getElementById('fp-comm-type').value,
-                    commVal: parseFloat(document.getElementById('fp-comm-val').value) || 0,
                     img: imgFinal
                 };
 
@@ -1640,7 +1650,7 @@
                     <tr class="border-b border-gray-800 hover:bg-gray-800/50 ${!v.active ? 'opacity-50' : ''}">
                         <td class="px-4 py-2 font-medium">${v.name}</td>
                         <td class="px-4 py-2 text-xs">${v.phone}</td>
-                        <td class="px-4 py-2">${v.commType === 'percent' ? v.commVal+'%' : 'S/'+v.commVal}</td>
+                        <td class="px-4 py-2 text-xs text-kgb-secondary font-bold">40% de Ganancia</td>
                         <td class="px-4 py-2"><span class="${v.active ? 'text-green-400' : 'text-red-400'} text-xs">${v.active ? 'Activo' : 'Inactivo'}</span></td>
                         <td class="px-4 py-2 text-right">
                             <button onclick="app.editVendor('${v.id}')" class="text-gray-400 hover:text-white mr-2"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -1663,8 +1673,6 @@
                 document.getElementById('fv-id').value = v.id;
                 document.getElementById('fv-name').value = v.name;
                 document.getElementById('fv-phone').value = v.phone;
-                document.getElementById('fv-comm-type').value = v.commType;
-                document.getElementById('fv-comm-val').value = v.commVal;
                 document.getElementById('modal-ven-title').textContent = 'Editar Vendedor';
                 this.openModal('modal-admin-vendor');
             },
@@ -1675,8 +1683,6 @@
                     id: id || this.generateId('V-'),
                     name: document.getElementById('fv-name').value.trim(),
                     phone: document.getElementById('fv-phone').value.trim(),
-                    commType: document.getElementById('fv-comm-type').value,
-                    commVal: parseFloat(document.getElementById('fv-comm-val').value) || 0,
                     active: true // default new to active
                 };
 
@@ -1706,7 +1712,7 @@
                 }
             },
 
-            // --- ADMIN: ORDERS (Simplified) ---
+            // --- ADMIN: HISTORIAL DE VENTAS (Orders) ---
             renderAdminOrders: function() {
                 const tbody = document.getElementById('admin-orders-table');
                 tbody.innerHTML = AppState.orders.map(o => `
@@ -1716,34 +1722,70 @@
                         <td class="px-4 py-2">${o.client.name}</td>
                         <td class="px-4 py-2 font-bold">${this.formatMoney(o.total)}</td>
                         <td class="px-4 py-2 text-xs text-gray-400">${o.vendorName}</td>
-                        <td class="px-4 py-2"><button onclick="app.showVoucher(AppState.orders.find(x=>x.id==='${o.id}'))" class="text-kgb-primary text-xs hover:underline">Ver</button></td>
+                        <td class="px-4 py-2">
+                            <span class="${o.status === 'Completado' ? 'text-green-400 bg-green-900/30 px-2 py-1 rounded' : (o.status === 'Cancelado' ? 'text-red-400 bg-red-900/30 px-2 py-1 rounded' : 'text-yellow-400 bg-yellow-900/30 px-2 py-1 rounded')} text-xs font-bold">${o.status}</span>
+                        </td>
+                        <td class="px-4 py-2 text-right space-x-2 whitespace-nowrap">
+                            ${o.status === 'Pendiente' ? `
+                                <button onclick="app.changeOrderStatus('${o.id}', 'Completado')" class="bg-gray-800 border border-gray-700 text-green-400 hover:bg-green-900/50 hover:text-green-300 w-8 h-8 rounded text-xs transition shadow" title="Marcar como Completado"><i class="fa-solid fa-check"></i></button>
+                                <button onclick="app.changeOrderStatus('${o.id}', 'Cancelado')" class="bg-gray-800 border border-gray-700 text-red-400 hover:bg-red-900/50 hover:text-red-300 w-8 h-8 rounded text-xs transition shadow" title="Cancelar Pedido"><i class="fa-solid fa-xmark"></i></button>
+                            ` : ''}
+                            <button onclick="app.showVoucher(AppState.orders.find(x=>x.id==='${o.id}'))" class="text-kgb-primary hover:text-blue-300 w-8 h-8 rounded text-sm transition" title="Ver Recibo"><i class="fa-solid fa-eye"></i></button>
+                        </td>
                     </tr>
                 `).join('');
             },
 
-            // --- ADMIN: REPORTS (Simplified) ---
+            changeOrderStatus: function(id, status) {
+                if(confirm(`¿Estás seguro de marcar este pedido como ${status}?`)) {
+                    const order = AppState.orders.find(o => o.id === id);
+                    if(order) {
+                        order.status = status;
+                        this.saveToLocal('kgb_orders', AppState.orders);
+                        
+                        // Refrescar vistas
+                        this.renderAdminOrders();
+                        this.renderAdminDashboard();
+                        this.renderAdminReports();
+                        
+                        // Sincronizar el estado con Sheets (Silencioso)
+                        this.syncOrderStatusToSheets(id, status);
+                        this.showToast(`Pedido ${id} marcado como ${status}`, "success");
+                    }
+                }
+            },
+
+            // --- ADMIN: REPORTS ---
             renderAdminReports: function() {
                 const tbody = document.getElementById('admin-reports-table');
                 
-                // Aggregate by vendor
+                // Aggregate by vendor SOLO PARA COMPELTADOS
                 const rep = {};
                 AppState.orders.forEach(o => {
+                    // La magia aquí: Solo sumar comisiones si la venta está terminada
+                    if (o.status !== 'Completado') return; 
+
                     const vid = o.vendorId || 'direct';
                     const vName = o.vendorName;
                     if(!rep[vid]) rep[vid] = { name: vName, count: 0, sales: 0, comm: 0 };
+                    
                     rep[vid].count++;
                     rep[vid].sales += o.subtotal;
                     rep[vid].comm += o.commissionCalculated;
                 });
 
                 tbody.innerHTML = Object.values(rep).map(r => `
-                    <tr class="border-b border-gray-800">
+                    <tr class="border-b border-gray-800 hover:bg-gray-800/50">
                         <td class="px-4 py-3">${r.name}</td>
-                        <td class="px-4 py-3 text-center">${r.count}</td>
+                        <td class="px-4 py-3 text-center"><span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded text-xs font-bold">${r.count}</span></td>
                         <td class="px-4 py-3">${this.formatMoney(r.sales)}</td>
                         <td class="px-4 py-3 text-green-400 font-bold">${this.formatMoney(r.comm)}</td>
                     </tr>
                 `).join('');
+                
+                if (Object.keys(rep).length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-gray-500">Aún no hay comisiones aprobadas</td></tr>';
+                }
             },
 
             // --- ADMIN: SETTINGS ---
@@ -1855,39 +1897,91 @@
                 }
             },
 
-            // --- GOOGLE SHEETS INTEGRATION (Structure Prepared for Future) ---
-            /**
-             * Para conectar con Google Sheets en el futuro:
-             * 1. Crear un Google Apps Script vinculado a un Sheet.
-             * 2. Crear una función doPost(e) en Apps Script que reciba el JSON.
-             * 3. Publicar el script como Web App y obtener la URL.
-             * 4. Reemplazar 'URL_DEL_WEB_APP' abajo con tu URL.
-             */
-            syncOrderToSheets: async function(orderData) {
+            // --- GOOGLE SHEETS INTEGRATION ---
+            syncDataToSheets: async function(type, data, successMsg) {
                 const scriptURL = AppState.settings.sheetsUrl;
                 if (!scriptURL) {
-                    console.log("Google Sheets: No hay URL configurada. Omitiendo sincronización.");
+                    this.showToast("Configura primero la URL de Google Sheets en Configuración", "error");
                     return;
                 }
-
+                
+                this.showToast("Sincronizando...", "info");
                 try {
-                    console.log("Enviando pedido a Google Sheets...");
-                    // Usamos text/plain para evitar el bloqueo de CORS Preflight en navegadores
                     fetch(scriptURL, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8'
-                        },
-                        body: JSON.stringify({ type: 'new_order', data: orderData })
-                    }).then(response => {
-                        console.log("Sincronización con Sheets completada.");
-                    }).catch(error => {
-                        console.error("Error en la solicitud a Sheets:", error);
-                    });
-                    
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ type: type, data: data })
+                    }).then(res => res.json())
+                      .then(res => {
+                          if(res.status === 'success') this.showToast(successMsg, "success");
+                          else this.showToast("Error en Sheets: " + res.message, "error");
+                      })
+                      .catch(e => {
+                          console.error(e);
+                          this.showToast("Datos enviados (revisa tu Google Sheet)", "success");
+                      });
                 } catch (error) {
-                    console.error('Error sincronizando con Sheets!', error.message);
+                    console.error('Error:', error);
                 }
+            },
+
+            syncOrderToSheets: async function(orderData) {
+                const scriptURL = AppState.settings.sheetsUrl;
+                if (!scriptURL) return;
+
+                try {
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ type: 'new_order', data: orderData })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res.status === 'success') {
+                            this.showToast("Sincronizado con Sheets ✅", "success");
+                        } else {
+                            this.showToast("Error en Sheets: " + res.message, "error");
+                        }
+                    })
+                    .catch(e => {
+                        console.error('Fetch error:', e);
+                        this.showToast("Pedido enviado (revisa tu hoja) ⏳", "info");
+                    });
+                } catch (error) {
+                    console.error('Error sincronizando pedido', error);
+                }
+            },
+            
+            syncOrderStatusToSheets: async function(orderId, status) {
+                const scriptURL = AppState.settings.sheetsUrl;
+                if (!scriptURL) return;
+
+                try {
+                    fetch(scriptURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ type: 'update_order_status', orderId: orderId, status: status })
+                    }).catch(e => console.error(e));
+                } catch (error) {
+                    console.error('Error enviando estado', error);
+                }
+            },
+
+            syncProductsToSheets: function() {
+                // Filtramos las imágenes en Base64 para que no colapsen Google Sheets (Límite de caracteres)
+                const safeProducts = AppState.products.map(p => {
+                    let safeImg = p.img;
+                    if (safeImg && safeImg.startsWith('data:image') && safeImg.length > 500) {
+                        safeImg = '[Imagen subida de forma local]';
+                    }
+                    return { ...p, img: safeImg };
+                });
+                
+                this.syncDataToSheets('sync_products', safeProducts, 'Productos sincronizados con éxito');
+            },
+
+            syncVendorsToSheets: function() {
+                this.syncDataToSheets('sync_vendors', AppState.vendors, 'Vendedores sincronizados con éxito');
             }
         };
 
